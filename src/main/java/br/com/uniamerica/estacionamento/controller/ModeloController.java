@@ -4,6 +4,7 @@ package br.com.uniamerica.estacionamento.controller;
 import br.com.uniamerica.estacionamento.entity.Modelo;
 import br.com.uniamerica.estacionamento.repository.ModeloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class ModeloController {
      * @return
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Modelo> findByIdPath (@PathVariable("id") final Long id){
+    public ResponseEntity<?> findByIdPath (@PathVariable("id") final Long id){
         return ResponseEntity.ok(new Modelo());
     }
 
@@ -40,13 +41,60 @@ public class ModeloController {
      * @return
      */
     @GetMapping
-    public ResponseEntity<Modelo> findByIdParam (@RequestParam("id") final Long id){
-        return ResponseEntity.ok(new Modelo());
+    public ResponseEntity<?> findByIdParam (@RequestParam("id") final Long id){
+        final Modelo modelo = this.modeloRepository.findById(id).orElse(null);
+
+        return modelo == null
+                ? ResponseEntity.badRequest().body("nenhum modelo encontrado.")
+                : ResponseEntity.ok(modelo);
+
     }
 
-//    @GetMapping
-//
-//    @PostMapping
-//    @PutMapping
+
+
+    @GetMapping("/lista")
+    public ResponseEntity<?> listCompleta(){
+        return  ResponseEntity.ok(this.modeloRepository.findAll());
+    }
+
+    @PostMapping
+    public ResponseEntity<?> cadastrar (@RequestBody final Modelo modelo){
+
+        try{
+            this.modeloRepository.save(modelo);
+            return ResponseEntity.ok("registro com sucesso");
+        }catch (Exception e){
+            return  ResponseEntity.badRequest().body("Error" + e.getMessage());
+        }
+
+    }
+    @PutMapping
+    public ResponseEntity<?> editar (
+            @RequestParam("id") final Long id,
+            @RequestBody final Modelo modelo
+    ){
+        try{
+            final Modelo modeloBanco = this.modeloRepository.findById(id).orElse(null);
+
+            if(modeloBanco == null || !modeloBanco.getId().equals(modelo.getId())){
+                throw new RuntimeException("nao foi possivel identficar o registro informado");
+            }
+
+            this.modeloRepository.save(modelo);
+            return ResponseEntity.ok("Registro atualizado com sucesso");
+
+        }catch(DataIntegrityViolationException e)
+        {
+            return ResponseEntity.internalServerError().body("Error" + e.getCause().getCause().getMessage());
+
+        }catch(RuntimeException e){
+
+            return ResponseEntity.internalServerError().body("Error" + e.getMessage());
+
+        }
+//        if(modeloBanco.getId() == modelo.getId()){
+//            throw new RuntimeException("nao foi possivel identficar o registro informado");
+//        }
+    }
 //    @DeleteMapping
 }
