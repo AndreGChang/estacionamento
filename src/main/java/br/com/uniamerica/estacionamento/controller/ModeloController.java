@@ -21,6 +21,7 @@ public class ModeloController {
     @Autowired
     private ModeloRepository modeloRepository;
 
+    //contructor para gerar a injecao
     public ModeloController(ModeloRepository modeloRepository){
         this.modeloRepository = modeloRepository;
     }
@@ -34,6 +35,7 @@ public class ModeloController {
     public ResponseEntity<?> findByIdPath (@PathVariable("id") final Long id){
         return ResponseEntity.ok(new Modelo());
     }
+
 
     /**
      * http://localhost:8080/api/modelo?id=1
@@ -69,10 +71,7 @@ public class ModeloController {
 
     }
     @PutMapping
-    public ResponseEntity<?> editar (
-            @RequestParam("id") final Long id,
-            @RequestBody final Modelo modelo
-    ){
+    public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Modelo modelo){
         try{
             final Modelo modeloBanco = this.modeloRepository.findById(id).orElse(null);
 
@@ -92,9 +91,14 @@ public class ModeloController {
             return ResponseEntity.internalServerError().body("Error" + e.getMessage());
 
         }
-//        if(modeloBanco.getId() == modelo.getId()){
-//            throw new RuntimeException("nao foi possivel identficar o registro informado");
-//        }
     }
-//    @DeleteMapping
+    @DeleteMapping
+    public ResponseEntity<?> deletar (@RequestParam("id") final Long id) {
+        final Modelo modeloBanco = this.modeloRepository.findById(id).orElse(null);
+
+        this.modeloRepository.delete(modeloBanco);
+        return ResponseEntity.ok("Registro atualizado com sucesso");
+
+    }
+
 }

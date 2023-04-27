@@ -3,13 +3,17 @@ package br.com.uniamerica.estacionamento.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Table(name="movimentacoes", schema = "plublic")
+@Table(name="movimentacoes", schema = "public")
+@Audited
+@AuditTable(value = "movimentacoes_audit", schema="audit")
 public class Movimentacao extends AbstractEntity{
 
 
@@ -62,11 +66,11 @@ public class Movimentacao extends AbstractEntity{
     @Setter
     @ManyToOne
     @JoinColumn(name = "veiculo", nullable = false)
-    private Veiculo veiculo;
+    private Veiculo veiculo_id;
 
     @Getter
     @Setter
     @ManyToOne
     @JoinColumn(name = "condutor", nullable = false)
-    private Condutor condutor;
+    private Condutor condutor_id;
 }

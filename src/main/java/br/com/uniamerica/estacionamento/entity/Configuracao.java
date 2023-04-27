@@ -3,6 +3,8 @@ package br.com.uniamerica.estacionamento.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 
 import java.math.BigDecimal;
@@ -11,6 +13,8 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name="configuracoes", schema = "public")
+@Audited
+@AuditTable(value = "configuracoes_audit", schema = "audit")
 public class Configuracao extends AbstractEntity{
 
     @Getter
