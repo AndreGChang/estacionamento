@@ -15,6 +15,7 @@ public interface CondutorRepository extends JpaRepository<Condutor, Long> {
 
     //buscando da forma customizada
     @Query("from Movimentacao where Condutor = :condutorid")
-    public List<Movimentacao> findCondutorById(@Param("condutorid") final Condutor condutorid);
+    public List<Movimentacao> findCondutor(@Param("condutorid") final Condutor condutorid);
+
 
 }

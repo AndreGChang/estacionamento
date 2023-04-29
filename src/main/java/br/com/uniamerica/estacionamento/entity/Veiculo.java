@@ -40,8 +40,8 @@ public class Veiculo extends AbstractEntity{
     @Getter
     @Setter
     @OneToOne
-    @JoinColumn(name = "marca", nullable = false)
-    private Marca marca;
+    @JoinColumn(name = "modelo", nullable = false)
+    private Modelo modelo;
 
 
 

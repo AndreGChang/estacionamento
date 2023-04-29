@@ -24,13 +24,14 @@ public class CondutorController {
 
         return condutor == null
                 ? ResponseEntity.badRequest().body("Error, Nao foi encontrado nenhum registro")
-                : ResponseEntity.ok("Sucesso na requisição");
+                : ResponseEntity.ok(condutor);
     }
 
     @GetMapping("/lista")
-    public ResponseEntity<?> listar (@RequestParam("id") final Long id){
+    public ResponseEntity<?> listar (){
         return ResponseEntity.ok(this.condutorRepository.findAll());
     }
+
     @PostMapping
     public ResponseEntity<?> cadastrar (@RequestBody final Condutor condutor){
         try{
@@ -64,8 +65,7 @@ public class CondutorController {
     public ResponseEntity<?> deletar (@RequestParam("id") final Long id){
         final Condutor condutorBanco = this.condutorRepository.findById(id).orElse(null);
 
-        List<Movimentacao> movimentacaoLista = this.condutorRepository.findCondutorById(condutorBanco);
-
+        List<Movimentacao> movimentacaoLista = this.condutorRepository.findCondutor(condutorBanco);
 
         if(movimentacaoLista == null){
             this.condutorRepository.delete(condutorBanco);
@@ -73,7 +73,7 @@ public class CondutorController {
         }else{
             condutorBanco.setAtivo(false);
             this.condutorRepository.save(condutorBanco);
-            return ResponseEntity.ok("Ativo alterado para false");
+            return ResponseEntity.ok("Ativo(condutor) alterado para false");
         }
 
     }

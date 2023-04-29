@@ -96,8 +96,13 @@ public class ModeloController {
     public ResponseEntity<?> deletar (@RequestParam("id") final Long id) {
         final Modelo modeloBanco = this.modeloRepository.findById(id).orElse(null);
 
-        this.modeloRepository.delete(modeloBanco);
-        return ResponseEntity.ok("Registro atualizado com sucesso");
+        if(modeloBanco == null){
+            this.modeloRepository.delete(modeloBanco);
+            return  ResponseEntity.ok("deletado com sucesso");
+        }else{
+            modeloBanco.setAtivo(false);
+            return ResponseEntity.ok("Ativo(modelo) alterado para false");
+        }
 
     }
 
