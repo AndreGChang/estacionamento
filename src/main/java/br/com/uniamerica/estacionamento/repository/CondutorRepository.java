@@ -18,4 +18,8 @@ public interface CondutorRepository extends JpaRepository<Condutor, Long> {
     public List<Movimentacao> findCondutor(@Param("condutorid") final Condutor condutorid);
 
 
+    @Query("from Condutor where cpf = :cpf")
+    public List<Condutor> findCpf(@Param("cpf") final String cpf);
+
+
 }

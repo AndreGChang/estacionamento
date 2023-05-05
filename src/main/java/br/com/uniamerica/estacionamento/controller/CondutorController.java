@@ -3,6 +3,7 @@ package br.com.uniamerica.estacionamento.controller;
 import br.com.uniamerica.estacionamento.entity.Condutor;
 import br.com.uniamerica.estacionamento.entity.Movimentacao;
 import br.com.uniamerica.estacionamento.repository.CondutorRepository;
+import br.com.uniamerica.estacionamento.service.CondutorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,8 @@ public class CondutorController {
 
     @Autowired
     private CondutorRepository condutorRepository;
+    @Autowired
+    private CondutorService condutorService;
 
     @GetMapping
     public ResponseEntity<?> findByParam (@RequestParam("id") final Long id){
@@ -35,28 +38,23 @@ public class CondutorController {
     @PostMapping
     public ResponseEntity<?> cadastrar (@RequestBody final Condutor condutor){
         try{
-            this.condutorRepository.save(condutor);
+            this.condutorService.cadastrar(condutor);
             return ResponseEntity.ok("Salvo com sucesso");
         }catch(Exception e){
-            return ResponseEntity.badRequest().body("error" + e.getMessage());
+            return ResponseEntity.badRequest().body("error " + e.getMessage());
         }
     }
 
     @PutMapping
     public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Condutor condutor){
         try{
-            final Condutor condutorBanco = this.condutorRepository.findById(id).orElse(null);
-
-            if(condutorBanco == null || !condutorBanco.getId().equals(condutor.getId())){
-                throw new RuntimeException("Nao foi possivel identificar o registro");
-            }
-            this.condutorRepository.save(condutor);
+            this.condutorService.editar(condutor);
             return ResponseEntity.ok().body("Registro salvo com sucesso");
 
         }catch(DataIntegrityViolationException e){
-            return ResponseEntity.internalServerError().body("Error" + e.getCause().getCause().getMessage());
+            return ResponseEntity.internalServerError().body("Error1" + e.getCause().getCause().getMessage());
         }catch(RuntimeException e){
-            return ResponseEntity.internalServerError().body("Error" + e.getMessage());
+            return ResponseEntity.internalServerError().body("Error2" + e.getMessage());
         }
     }
 
@@ -65,17 +63,9 @@ public class CondutorController {
     public ResponseEntity<?> deletar (@RequestParam("id") final Long id){
         final Condutor condutorBanco = this.condutorRepository.findById(id).orElse(null);
 
-        List<Movimentacao> movimentacaoLista = this.condutorRepository.findCondutor(condutorBanco);
+        this.condutorService.deletar(condutorBanco);
 
-        if(movimentacaoLista == null){
-            this.condutorRepository.delete(condutorBanco);
-            return ResponseEntity.ok("Deletado com sucesso");
-        }else{
-            condutorBanco.setAtivo(false);
-            this.condutorRepository.save(condutorBanco);
-            return ResponseEntity.ok("Ativo(condutor) alterado para false");
-        }
-
+        return ResponseEntity.ok("Registro deletado");
     }
 
 

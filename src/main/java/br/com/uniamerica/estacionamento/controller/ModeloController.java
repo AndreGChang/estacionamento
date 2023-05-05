@@ -2,12 +2,15 @@ package br.com.uniamerica.estacionamento.controller;
 
 
 import br.com.uniamerica.estacionamento.entity.Modelo;
+import br.com.uniamerica.estacionamento.entity.Veiculo;
 import br.com.uniamerica.estacionamento.repository.ModeloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/api/modelo")
@@ -52,11 +55,14 @@ public class ModeloController {
 
     }
 
-
-
     @GetMapping("/lista")
     public ResponseEntity<?> listCompleta(){
         return  ResponseEntity.ok(this.modeloRepository.findAll());
+    }
+
+    @GetMapping("/ativo")
+    public ResponseEntity<?> buscarModelosAtivos (){
+        return ResponseEntity.ok(this.modeloRepository.findByAtivo());
     }
 
     @PostMapping
@@ -96,11 +102,14 @@ public class ModeloController {
     public ResponseEntity<?> deletar (@RequestParam("id") final Long id) {
         final Modelo modeloBanco = this.modeloRepository.findById(id).orElse(null);
 
-        if(modeloBanco == null){
+        List<Veiculo> veiculoList = this.modeloRepository.findVeiculo(modeloBanco);
+
+        if(veiculoList == null){
             this.modeloRepository.delete(modeloBanco);
             return  ResponseEntity.ok("deletado com sucesso");
         }else{
             modeloBanco.setAtivo(false);
+            this.modeloRepository.save(modeloBanco);
             return ResponseEntity.ok("Ativo(modelo) alterado para false");
         }
 

@@ -33,6 +33,12 @@ public class MarcaController {
 
     }
 
+    @GetMapping("/ativo")
+    public ResponseEntity<?> buscarAtivos(){
+        return ResponseEntity.ok(this.marcaRepository.findMarcasAtivas());
+    }
+
+
     @PostMapping
     public ResponseEntity<?> cadastrar (@RequestBody final Marca marca){
 
@@ -74,6 +80,7 @@ public class MarcaController {
             return ResponseEntity.ok("Delete som sucesso");
         }else{
             marcaBanco.setAtivo(false);
+            this.marcaRepository.save(marcaBanco);
             return ResponseEntity.ok("Ativo(marca) alterado para false ");
         }
     }
