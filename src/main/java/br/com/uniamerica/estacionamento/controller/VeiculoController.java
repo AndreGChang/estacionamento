@@ -77,6 +77,7 @@ public class VeiculoController {
             return ResponseEntity.ok("Delete som sucesso");
         }else{
             veiculoBanco.setAtivo(false);
+            this.veiculoRepository.save(veiculoBanco);
             return ResponseEntity.ok("Ativo(marca) alterado para false ");
         }
     }

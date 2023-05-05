@@ -32,6 +32,11 @@ public class MovimentacaoController {
                 : ResponseEntity.ok(movimentacao);
     }
 
+    @GetMapping("/abertas")
+    public ResponseEntity<?> buscarAbertas (){
+        return ResponseEntity.ok(this.movimentacaoRepository.findSaidas());
+    }
+
 
     @PostMapping
     public ResponseEntity<?> cadastrar (@RequestBody final Movimentacao movimentacao){
@@ -68,10 +73,10 @@ public class MovimentacaoController {
     public ResponseEntity<?> delete (@RequestParam("id") final  Long id){
         final Movimentacao movimentacaoBanco = this.movimentacaoRepository.findById(id).orElse(null);
 
-        List<Movimentacao> movimentacaoLista = this.movimentacaoRepository.findSaidas();
         try{
             movimentacaoBanco.setAtivo(false);
-            return ResponseEntity.ok("Ativo(marca) alterado para false ");
+            this.movimentacaoRepository.save(movimentacaoBanco);
+            return ResponseEntity.ok("Ativo(movimentacao) alterado para false ");
         }catch(RuntimeException e){
             return ResponseEntity.internalServerError().body("Error " + e.getMessage());
         }

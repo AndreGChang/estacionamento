@@ -22,7 +22,7 @@ public class Modelo extends AbstractEntity{
 
     @Getter
     @Setter
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "marca",nullable = false)
     private Marca marca;
 

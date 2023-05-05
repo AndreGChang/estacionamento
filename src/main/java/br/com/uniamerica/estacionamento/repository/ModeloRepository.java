@@ -14,4 +14,7 @@ public interface ModeloRepository extends JpaRepository<Modelo, Long> {
     @Query("from Veiculo where Modelo = :modelo")
     public List<Veiculo> findVeiculo (@RequestParam("id") final Modelo modelo);
 
+    @Query("from Modelo where ativo = true")
+    public List<Modelo> findByAtivo ();
+
 }
