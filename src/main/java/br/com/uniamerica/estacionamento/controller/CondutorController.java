@@ -48,7 +48,7 @@ public class CondutorController {
     @PutMapping
     public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Condutor condutor){
         try{
-            this.condutorService.editar(condutor);
+            this.condutorService.editar(id,condutor);
             return ResponseEntity.ok().body("Registro salvo com sucesso");
 
         }catch(DataIntegrityViolationException e){

@@ -3,6 +3,7 @@ package br.com.uniamerica.estacionamento.controller;
 
 import br.com.uniamerica.estacionamento.entity.Movimentacao;
 import br.com.uniamerica.estacionamento.repository.MovimentacaoRepository;
+import br.com.uniamerica.estacionamento.service.MovimentacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,9 @@ public class MovimentacaoController {
 
     @Autowired
     private MovimentacaoRepository movimentacaoRepository;
+
+    @Autowired
+    private MovimentacaoService movimentacaoService;
 
     @GetMapping(value = "/lista")
     public ResponseEntity<?> listar (){
@@ -34,15 +38,14 @@ public class MovimentacaoController {
 
     @GetMapping("/abertas")
     public ResponseEntity<?> buscarAbertas (){
-        return ResponseEntity.ok(this.movimentacaoRepository.findSaidas());
+        return ResponseEntity.ok(this.movimentacaoService.abertas());
     }
-
 
     @PostMapping
     public ResponseEntity<?> cadastrar (@RequestBody final Movimentacao movimentacao){
 
         try{
-            this.movimentacaoRepository.save(movimentacao);
+            this.movimentacaoService.cadastrar(movimentacao);
             return ResponseEntity.ok("registro com sucesso");
         }catch (Exception e){
             return  ResponseEntity.badRequest().body("Error" + e.getMessage());
@@ -53,14 +56,10 @@ public class MovimentacaoController {
     @PutMapping
     public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Movimentacao movimentacao){
         try{
-            final Movimentacao movimentacaoBanco = this.movimentacaoRepository.findById(id).orElse(null);
 
-            if(movimentacaoBanco == null || !movimentacaoBanco.getId().equals(movimentacao.getId())){
-                throw new RuntimeException("Nao foi possivel identificar o registro");
-            }
-
-            this.movimentacaoRepository.save(movimentacao);
+            this.movimentacaoService.editar(id,movimentacao);
             return ResponseEntity.ok().body("Salvo com sucesso");
+
         }catch(DataIntegrityViolationException e){
             return ResponseEntity.internalServerError().body("Error " + e.getCause().getCause().getMessage());
         }catch(RuntimeException e){
@@ -74,8 +73,7 @@ public class MovimentacaoController {
         final Movimentacao movimentacaoBanco = this.movimentacaoRepository.findById(id).orElse(null);
 
         try{
-            movimentacaoBanco.setAtivo(false);
-            this.movimentacaoRepository.save(movimentacaoBanco);
+            this.movimentacaoService.deletar(movimentacaoBanco);
             return ResponseEntity.ok("Ativo(movimentacao) alterado para false ");
         }catch(RuntimeException e){
             return ResponseEntity.internalServerError().body("Error " + e.getMessage());

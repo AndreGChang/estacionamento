@@ -6,6 +6,7 @@ import br.com.uniamerica.estacionamento.entity.Movimentacao;
 import br.com.uniamerica.estacionamento.entity.Veiculo;
 import br.com.uniamerica.estacionamento.repository.MarcaRepository;
 import br.com.uniamerica.estacionamento.repository.VeiculoRepository;
+import br.com.uniamerica.estacionamento.service.VeiculoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,10 @@ public class VeiculoController {
 
     @Autowired
     private VeiculoRepository veiculoRepository;
+
+
+    @Autowired
+    private VeiculoService veiculoService;
 
     @GetMapping("/lista")
     public ResponseEntity<?> listar() {
@@ -40,7 +45,7 @@ public class VeiculoController {
     public ResponseEntity<?> cadastrar (@RequestBody final Veiculo veiculo){
 
         try{
-            this.veiculoRepository.save(veiculo);
+            this.veiculoService.cadastrar(veiculo);
             return ResponseEntity.ok("registro com sucesso");
         }catch (Exception e){
             return  ResponseEntity.badRequest().body("Error" + e.getMessage());
@@ -51,14 +56,10 @@ public class VeiculoController {
     @PutMapping
     public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Veiculo veiculo){
         try{
-            final Veiculo veiculoBanco = this.veiculoRepository.findById(id).orElse(null);
 
-            if(veiculoBanco == null || !veiculoBanco.getId().equals(veiculo.getId())){
-                throw new RuntimeException("Nao foi possivel identificar o registro");
-            }
-
-            this.veiculoRepository.save(veiculo);
+            this.veiculoService.editar(id,veiculo);
             return ResponseEntity.ok().body("Salvo com sucesso");
+
         }catch(DataIntegrityViolationException e){
             return ResponseEntity.internalServerError().body("Error " + e.getCause().getCause().getMessage());
         }catch(RuntimeException e){
@@ -70,16 +71,9 @@ public class VeiculoController {
     public ResponseEntity<?> delete (@RequestParam("id") final  Long id){
         final Veiculo veiculoBanco = this.veiculoRepository.findById(id).orElse(null);
 
-        List<Movimentacao> modeloLista = this.veiculoRepository.findByVeiculo(veiculoBanco);
+        this.veiculoService.deletar(veiculoBanco);
 
-        if(veiculoBanco == null){
-            this.veiculoRepository.delete(veiculoBanco);
-            return ResponseEntity.ok("Delete som sucesso");
-        }else{
-            veiculoBanco.setAtivo(false);
-            this.veiculoRepository.save(veiculoBanco);
-            return ResponseEntity.ok("Ativo(marca) alterado para false ");
-        }
+        return ResponseEntity.ok("deletado com sucesso");
     }
 
 

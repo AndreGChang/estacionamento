@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ModeloRepository extends JpaRepository<Modelo, Long> {
 
-    @Query("from Veiculo where Modelo = :modelo")
+    @Query("from Veiculo where modelo = :modelo")
     public List<Veiculo> findVeiculo (@RequestParam("id") final Modelo modelo);
 
     @Query("from Modelo where ativo = true")

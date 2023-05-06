@@ -4,6 +4,7 @@ package br.com.uniamerica.estacionamento.controller;
 import br.com.uniamerica.estacionamento.entity.Modelo;
 import br.com.uniamerica.estacionamento.entity.Veiculo;
 import br.com.uniamerica.estacionamento.repository.ModeloRepository;
+import br.com.uniamerica.estacionamento.service.ModeloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,9 @@ public class ModeloController {
      */
     @Autowired
     private ModeloRepository modeloRepository;
+
+    @Autowired
+    private ModeloService modeloService;
 
     //contructor para gerar a injecao
     public ModeloController(ModeloRepository modeloRepository){
@@ -79,40 +83,21 @@ public class ModeloController {
     @PutMapping
     public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Modelo modelo){
         try{
-            final Modelo modeloBanco = this.modeloRepository.findById(id).orElse(null);
-
-            if(modeloBanco == null || !modeloBanco.getId().equals(modelo.getId())){
-                throw new RuntimeException("nao foi possivel identficar o registro informado");
-            }
-
-            this.modeloRepository.save(modelo);
+            this.modeloService.editar(id,modelo);
             return ResponseEntity.ok("Registro atualizado com sucesso");
-
-        }catch(DataIntegrityViolationException e)
-        {
+        }catch(DataIntegrityViolationException e) {
             return ResponseEntity.internalServerError().body("Error" + e.getCause().getCause().getMessage());
-
         }catch(RuntimeException e){
-
             return ResponseEntity.internalServerError().body("Error" + e.getMessage());
-
         }
     }
     @DeleteMapping
     public ResponseEntity<?> deletar (@RequestParam("id") final Long id) {
         final Modelo modeloBanco = this.modeloRepository.findById(id).orElse(null);
 
-        List<Veiculo> veiculoList = this.modeloRepository.findVeiculo(modeloBanco);
+        this.modeloService.deletar(modeloBanco);
 
-        if(veiculoList == null){
-            this.modeloRepository.delete(modeloBanco);
-            return  ResponseEntity.ok("deletado com sucesso");
-        }else{
-            modeloBanco.setAtivo(false);
-            this.modeloRepository.save(modeloBanco);
-            return ResponseEntity.ok("Ativo(modelo) alterado para false");
-        }
-
+        return ResponseEntity.ok("Registro deletado");
     }
 
 }

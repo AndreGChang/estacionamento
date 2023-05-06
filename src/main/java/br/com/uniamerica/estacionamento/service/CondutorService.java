@@ -43,9 +43,13 @@ public class CondutorService {
     }
 
 
-    @Transactional
-    public void editar(final Condutor condutor){
+    @Transactional(rollbackFor =  Exception.class)
+    public void editar(final Long id,final Condutor condutor){
+
         final Condutor condutorBanco = this.condutorRepository.findById(condutor.getId()).orElse(null);
+        Assert.isTrue(condutorBanco != null || !condutorBanco.getId().equals(condutor.getId()),"1Nao foi possivel identificar o registro");
+
+        Assert.isTrue(condutorBanco.getId().equals(id) ,"Error id da URL diferente do body");
 
         //Verifica o TELEFONE
         Assert.isTrue(condutor.getTelefone() != null, "Error digite uma telefone");
@@ -54,19 +58,15 @@ public class CondutorService {
         Assert.isTrue(!condutor.getTelefone().matches(regexTelefone), "Mascara de telefone invalida");
 
         //verificar o CPF
-        Assert.isTrue(condutorBanco != null || !condutorBanco.getId().equals(condutor.getId()),"1Nao foi possivel identificar o registro");
         Assert.isTrue(condutor.getCpf() != null, "CPF, nao informado");
-        Assert.isTrue(condutorRepository.findCpf(condutor.getCpf()).isEmpty(), "CPF ja exixte");
 
         String regexCpf = "^\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$";
         Assert.isTrue(condutor.getCpf().matches(regexCpf), "Error cpf com mascara errada");
 
-
-
         this.condutorRepository.save(condutor);
     }
 
-    @Transactional
+    @Transactional(rollbackFor =  Exception.class)
     public void deletar (final Condutor condutor){
         final Condutor condutorBanco = this.condutorRepository.findById(condutor.getId()).orElse(null);
 
