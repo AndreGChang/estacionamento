@@ -29,7 +29,7 @@ public class VeiculoService {
     public void editar (final Long id,final Veiculo veiculo){
         final Veiculo veiculoBanco = this.veiculoRepository.findById(veiculo.getId()).orElse(null);
 
-        Assert.isTrue(veiculoBanco.getId().equals(id) ,"Error id da URL diferente do body");
+        Assert.isTrue(veiculoBanco.getId().equals(id),"Error id da URL diferente do body");
 
         Assert.isTrue(veiculoBanco != null || !veiculoBanco.getId().equals(veiculo.getId()),"Registro nao identificado");
 

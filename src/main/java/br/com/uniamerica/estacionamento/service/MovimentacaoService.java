@@ -13,7 +13,6 @@ import java.util.List;
 
 @Service
 public class MovimentacaoService {
-
     @Autowired
     private MovimentacaoRepository movimentacaoRepository;
 
@@ -33,7 +32,7 @@ public class MovimentacaoService {
 
         Assert.isTrue(movimentacaoBanco.getId().equals(id) ,"Error id da URL diferente do body");
 
-        Assert.isTrue(movimentacaoBanco == null || !movimentacaoBanco.getId().equals(movimentacao.getId()),"Registro nao identificado");
+        Assert.isTrue(movimentacaoBanco != null || !movimentacaoBanco.getId().equals(movimentacao.getId()),"Registro nao identificado");
 
         this.movimentacaoRepository.save(movimentacao);
 

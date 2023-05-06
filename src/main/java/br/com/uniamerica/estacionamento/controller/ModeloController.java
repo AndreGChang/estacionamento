@@ -78,8 +78,8 @@ public class ModeloController {
         }catch (Exception e){
             return  ResponseEntity.badRequest().body("Error" + e.getMessage());
         }
-
     }
+
     @PutMapping
     public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Modelo modelo){
         try{

@@ -55,17 +55,17 @@ public class Configuracao extends AbstractEntity{
     @Getter
     @Setter
     @Column(name = "vagas_carro")
-    private int vagasCarro;
+    private Integer vagasCarro;
 
     @Getter
     @Setter
     @Column(name = "vagas_moto")
-    private int vagasMoto;
+    private Integer vagasMoto;
 
     @Getter
     @Setter
     @Column(name = "vagas_vans")
-    private int vagasVans;
+    private Integer vagasVans;
 
 
 }

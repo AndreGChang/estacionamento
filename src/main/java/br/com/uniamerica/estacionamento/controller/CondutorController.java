@@ -61,12 +61,14 @@ public class CondutorController {
 
     @DeleteMapping
     public ResponseEntity<?> deletar (@RequestParam("id") final Long id){
-        final Condutor condutorBanco = this.condutorRepository.findById(id).orElse(null);
+        try{
 
-        this.condutorService.deletar(condutorBanco);
+            this.condutorService.deletar(id);
+            return ResponseEntity.ok("Registro deletado");
+        }catch(RuntimeException e){
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
 
-        return ResponseEntity.ok("Registro deletado");
     }
-
 
 }

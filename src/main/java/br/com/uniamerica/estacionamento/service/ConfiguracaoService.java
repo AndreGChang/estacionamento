@@ -26,6 +26,7 @@ public class ConfiguracaoService {
         Assert.isTrue(configuracao.getTempoParaDesconto() != null, "Error, campo vazio");
         Assert.isTrue(configuracao.getTempoDeDesconto() != null, "Error, campo vazio");
 
+
         this.configuracaoRepository.save(configuracao);
     }
 
@@ -33,6 +34,10 @@ public class ConfiguracaoService {
     @Transactional(rollbackFor =  Exception.class)
     public void editar(final Long id,final Configuracao configuracao){
         final Configuracao configuracaoBanco = this.configuracaoRepository.findById(configuracao.getId()).orElse(null);
+
+        Assert.isTrue(configuracao.getVagasVans() != null, "Error, compo vagas vans nao pode ser nulo");
+        Assert.isTrue(configuracao.getVagasCarro() != null, "Error, compo vagas carro nao pode ser nulo");
+        Assert.isTrue(configuracao.getVagasMoto() != null, "Error, compo vagas motos nao pode ser nulo");
 
         Assert.isTrue(configuracaoBanco.getId().equals(id) ,"Error id da URL diferente do body");
 
