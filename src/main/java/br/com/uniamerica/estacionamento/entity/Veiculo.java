@@ -23,7 +23,7 @@ public class Veiculo extends AbstractEntity{
     @Getter
     @Setter
     @Column(name = "ano", nullable = false)
-    private int ano;
+    private Integer ano;
 
     //exemplo de enum (nao e pra usar aqui)
     @Enumerated(EnumType.STRING)

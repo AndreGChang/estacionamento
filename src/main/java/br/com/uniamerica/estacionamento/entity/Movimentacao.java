@@ -65,12 +65,12 @@ public class Movimentacao extends AbstractEntity{
     @Getter
     @Setter
     @ManyToOne
-    @JoinColumn(name = "veiculo", nullable = false)
-    private Veiculo veiculo_id;
+    @JoinColumn(name = "veiculo_id", nullable = false)
+    private Veiculo veiculo;
 
     @Getter
     @Setter
     @ManyToOne
-    @JoinColumn(name = "condutor", nullable = false)
-    private Condutor condutor_id;
+    @JoinColumn(name = "condutor_id", nullable = false)
+    private Condutor condutor;
 }

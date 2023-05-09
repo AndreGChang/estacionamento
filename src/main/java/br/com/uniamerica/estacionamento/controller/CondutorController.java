@@ -48,7 +48,7 @@ public class CondutorController {
     @PutMapping
     public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Condutor condutor){
         try{
-            this.condutorService.editar(condutor);
+            this.condutorService.editar(id,condutor);
             return ResponseEntity.ok().body("Registro salvo com sucesso");
 
         }catch(DataIntegrityViolationException e){
@@ -61,12 +61,14 @@ public class CondutorController {
 
     @DeleteMapping
     public ResponseEntity<?> deletar (@RequestParam("id") final Long id){
-        final Condutor condutorBanco = this.condutorRepository.findById(id).orElse(null);
+        try{
 
-        this.condutorService.deletar(condutorBanco);
+            this.condutorService.deletar(id);
+            return ResponseEntity.ok("Registro deletado");
+        }catch(RuntimeException e){
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
 
-        return ResponseEntity.ok("Registro deletado");
     }
-
 
 }
