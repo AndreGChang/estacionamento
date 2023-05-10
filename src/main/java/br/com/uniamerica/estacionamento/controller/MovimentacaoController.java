@@ -67,6 +67,16 @@ public class MovimentacaoController {
         }
     }
 
+    @PutMapping("/saida")
+    public ResponseEntity<?> saida (@RequestParam("id")final Long id){
+        try{
+            this.movimentacaoService.saida(id);
+            return ResponseEntity.ok("Movimentacao finalizada");
+        }catch(RuntimeException e){
+            return ResponseEntity.badRequest().body("Error " + e.getMessage());
+        }
+    }
+
 
     @DeleteMapping
     public ResponseEntity<?> delete (@RequestParam("id") final  Long id){
