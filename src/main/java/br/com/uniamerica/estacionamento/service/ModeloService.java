@@ -30,7 +30,8 @@ public class ModeloService {
 
     @Transactional(rollbackFor = Exception.class)
     public void editar(final Long id,final Modelo modelo){
-        final Modelo modeloBanco = this.modeloRepository.findById(modelo.getId()).orElse(null);
+
+        final Modelo modeloBanco = this.modeloRepository.findById(id).orElse(null);
 
         Assert.isTrue(modeloBanco.getId().equals(id) ,"Error id da URL diferente do body");
 
@@ -46,7 +47,7 @@ public class ModeloService {
         final Modelo modeloBanco = this.modeloRepository.findById(modelo.getId()).orElse(null);
 
         List<Veiculo> veiculoList = this.modeloRepository.findVeiculo(modeloBanco);
-
+        
         if(veiculoList.isEmpty()){
             this.modeloRepository.delete(modeloBanco);
         }else{

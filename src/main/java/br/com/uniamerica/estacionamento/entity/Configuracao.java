@@ -34,18 +34,18 @@ public class Configuracao extends AbstractEntity{
 
     @Getter
     @Setter
-    @Column(name = "fim_expiente")
+    @Column(name = "fim_expediente")
     private LocalTime fimExpediente;
 
     @Getter
     @Setter
     @Column(name = "tempo_para_desconto")
-    private LocalTime tempoParaDesconto;
+    private Integer tempoParaDesconto;
 
     @Getter
     @Setter
     @Column(name = "tempo_desconto")
-    private LocalTime tempoDeDesconto;
+    private BigDecimal tempoDeDesconto;
 
     @Getter
     @Setter

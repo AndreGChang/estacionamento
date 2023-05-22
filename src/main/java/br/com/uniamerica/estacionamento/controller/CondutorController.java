@@ -50,7 +50,6 @@ public class CondutorController {
         try{
             this.condutorService.editar(id,condutor);
             return ResponseEntity.ok().body("Registro salvo com sucesso");
-
         }catch(DataIntegrityViolationException e){
             return ResponseEntity.internalServerError().body("Error1" + e.getCause().getCause().getMessage());
         }catch(RuntimeException e){
@@ -59,10 +58,10 @@ public class CondutorController {
     }
 
 
+
     @DeleteMapping
     public ResponseEntity<?> deletar (@RequestParam("id") final Long id){
         try{
-
             this.condutorService.deletar(id);
             return ResponseEntity.ok("Registro deletado");
         }catch(RuntimeException e){
