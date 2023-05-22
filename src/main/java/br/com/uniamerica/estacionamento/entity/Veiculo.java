@@ -1,6 +1,7 @@
 package br.com.uniamerica.estacionamento.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.envers.AuditTable;
@@ -17,15 +18,16 @@ public class Veiculo extends AbstractEntity{
 
     @Getter
     @Setter
-    @Column(name = "placa", length = 20, nullable = false, unique = true)
+    @Column(name = "placa", length = 10, nullable = false, unique = true)
     private String placa;
 
     @Getter
     @Setter
     @Column(name = "ano", nullable = false)
+    //@Min(value = 1990)
     private Integer ano;
 
-    //exemplo de enum (nao e pra usar aqui)
+    //exemplo de enum
     @Enumerated(EnumType.STRING)
     @Getter @Setter
     @Column(name = "cor", length = 20, nullable = false)
@@ -36,10 +38,9 @@ public class Veiculo extends AbstractEntity{
     @Column(name = "tipo", length = 20, nullable = false)
     private Tipo tipo;
 
-
     @Getter
     @Setter
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "modelo", nullable = false)
     private Modelo modelo;
 

@@ -12,6 +12,7 @@ import org.hibernate.envers.AuditTable;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.br.CPF;
 
+import java.math.BigDecimal;
 import java.time.LocalTime;
 
 @Entity
@@ -30,16 +31,16 @@ public class Condutor extends AbstractEntity{
     private String cpf;
 
     @Getter @Setter
-    @Column(name = "telefone", nullable = false, unique = true, length = 17)
+    @Column(name = "telefone", nullable = false, unique = true, length = 18)
     private String telefone;
 
     @Getter @Setter
     @Column(name = "tempo_gasto")
-    private LocalTime tempoPago;
+    private BigDecimal tempoPago;
 
     @Getter @Setter
     @Column(name = "tempo_desconto")
-    private LocalTime tempoDesconto;
+    private BigDecimal tempoDesconto;
 
 
 }

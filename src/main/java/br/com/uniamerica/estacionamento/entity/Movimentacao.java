@@ -1,5 +1,6 @@
 package br.com.uniamerica.estacionamento.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +8,7 @@ import org.hibernate.envers.AuditTable;
 import org.hibernate.envers.Audited;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -29,8 +31,13 @@ public class Movimentacao extends AbstractEntity{
 
     @Getter
     @Setter
-    @Column(name = "tempo_total")
-    private LocalTime tempoTotal;
+    @Column(name = "horas")
+    private Integer horas;
+
+    @Getter
+    @Setter
+    @Column(name = "minutos")
+    private Integer minutos;
 
     @Getter
     @Setter
@@ -40,7 +47,7 @@ public class Movimentacao extends AbstractEntity{
     @Getter
     @Setter
     @Column(name = "tempo_desconto")
-    private LocalTime tempoDesconto;
+    private Integer tempoDesconto;
 
     @Getter
     @Setter
@@ -64,13 +71,21 @@ public class Movimentacao extends AbstractEntity{
 
     @Getter
     @Setter
+    //@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "veiculo_id", nullable = false)
     private Veiculo veiculo;
 
     @Getter
     @Setter
+    //@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "condutor_id", nullable = false)
     private Condutor condutor;
+
+    @PrePersist
+    private void prePersiste(){
+        this.setEntrada(LocalDateTime.now());
+        this.setTempoDesconto(0);
+    }
 }

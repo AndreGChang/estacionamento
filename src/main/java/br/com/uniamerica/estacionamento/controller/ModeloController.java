@@ -91,13 +91,19 @@ public class ModeloController {
             return ResponseEntity.internalServerError().body("Error" + e.getMessage());
         }
     }
+
     @DeleteMapping
     public ResponseEntity<?> deletar (@RequestParam("id") final Long id) {
-        final Modelo modeloBanco = this.modeloRepository.findById(id).orElse(null);
+        try{
+            final Modelo modeloBanco = this.modeloRepository.findById(id).orElse(null);
 
-        this.modeloService.deletar(modeloBanco);
+            this.modeloService.deletar(modeloBanco);
 
-        return ResponseEntity.ok("Registro deletado");
+            return ResponseEntity.ok("Registro deletado");
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body("Error " +  e.getMessage());
+        }
+
     }
 
 }

@@ -1,18 +1,24 @@
 package br.com.uniamerica.estacionamento.controller;
 
 
+import br.com.uniamerica.estacionamento.Recibo;
 import br.com.uniamerica.estacionamento.entity.Movimentacao;
 import br.com.uniamerica.estacionamento.repository.MovimentacaoRepository;
 import br.com.uniamerica.estacionamento.service.MovimentacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping(value = "/api/movimentacao")
 public class MovimentacaoController {
 
@@ -22,7 +28,7 @@ public class MovimentacaoController {
     @Autowired
     private MovimentacaoService movimentacaoService;
 
-    @GetMapping(value = "/lista")
+    @GetMapping("/lista")
     public ResponseEntity<?> listar (){
         return ResponseEntity.ok(this.movimentacaoRepository.findAll());
     }
@@ -67,6 +73,16 @@ public class MovimentacaoController {
         }
     }
 
+    @PutMapping("/saida")
+    public ResponseEntity<?> saida (@RequestParam("id")final Long id){
+        try{
+             Recibo dale = this.movimentacaoService.saida(id);
+            return ResponseEntity.ok(dale);
+        }catch(RuntimeException e){
+            return ResponseEntity.badRequest().body("Error " + e.getMessage());
+        }
+    }
+
 
     @DeleteMapping
     public ResponseEntity<?> delete (@RequestParam("id") final  Long id){
@@ -79,7 +95,25 @@ public class MovimentacaoController {
             return ResponseEntity.internalServerError().body("Error " + e.getMessage());
         }
 
-
     }
+
+
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public Map<String, String> handlerValidationException(MethodArgumentNotValidException ex){
+//        Map<String,String> errors = new HashMap<>();
+//
+//        ex.getBindingResult().getAllErrors().forEach((error) ->{
+//            String filedname = ((FieldError) error).getField();
+//            String errorMessage = error.getDefaultMessage();
+//
+//            errors.put(filedname,errorMessage);
+//
+//
+//        });
+//
+//        return errors;
+//    }
+
 
 }

@@ -27,14 +27,11 @@ public class MarcaService {
 
     @Transactional(rollbackFor = Exception.class)
     public void editar(final Long id,final Marca marca){
-        final Marca marcaBanco = this.marcaRepository.findById(marca.getId()).orElse(null);
-
-        System.out.println(id);
-        System.out.println(marcaBanco.getId());
+        final Marca marcaBanco = this.marcaRepository.findById(id).orElse(null);
 
         Assert.isTrue(marcaBanco.getId().equals(id) ,"Error id da URL diferente do body");
 
-        Assert.isTrue(marcaBanco == null || !marcaBanco.getId().equals(marca.getId()),"nao foi possivel identificar o registro");
+        Assert.isTrue(marcaBanco != null || !marcaBanco.getId().equals(marca.getId()),"nao foi possivel identificar o registro");
 
         this.marcaRepository.save(marca);
 
@@ -53,6 +50,7 @@ public class MarcaService {
             marcaBanco.setAtivo(false);
             System.out.println("ola2");
             this.marcaRepository.save(marcaBanco);
+
         }
     }
 }
