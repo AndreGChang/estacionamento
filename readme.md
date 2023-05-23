@@ -21,9 +21,9 @@
 
 ## Funcionalidades
 
-`Funcionalidade 1:` Cadastrar um veiculo e condutor para gerar uma movimentacao.
-`Funcionalidade 2:` Armazenar os dados em um banco relacional como o PostgreSQL.
-`Funcionalidade 3:` Gerar os saldos do estacionamento.
+`Funcionalidade 1:` Cadastrar uma marca, modelo, veiculo e condutor para gerar uma movimentacao.<br>
+`Funcionalidade 2:` Armazenar os dados em um banco relacional como o PostgreSQL.<br>
+`Funcionalidade 3:` Gerar os saldos do estacionamento.<br>
 
 ## Ferramentas utilizadas
 
