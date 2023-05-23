@@ -5,7 +5,7 @@
 </p>
 
 ### Topicos
-- [Descircao do projeto](#descricao-do-projeto)
+- [Descricao do projeto](#descricao-do-projeto)
 
 - [Funcionalidades](#funcionalidades)
 
