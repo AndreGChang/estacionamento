@@ -66,6 +66,8 @@ public class MovimentacaoService {
 
         Assert.isTrue(movimentacaoBanco != null, "Error registro nao encontrado");
 
+        movimentacaoBanco.setAtivo(false);
+
         LocalDateTime saida = LocalDateTime.now();
 
         Duration duracao = Duration.between(movimentacaoBanco.getEntrada(), saida);
@@ -84,6 +86,7 @@ public class MovimentacaoService {
 
         if(config.isGerarDesconto()){
             if(alguem.getTempoDesconto().compareTo(new BigDecimal(config.getTempoParaDesconto())) > 0){
+                System.out.println(alguem.getTempoDesconto().compareTo(new BigDecimal(config.getTempoParaDesconto())));
                 movimentacaoBanco.setValorDesconto(preco.subtract(config.getTempoDeDesconto()));
             }else{
                 alguem.setTempoDesconto(horas.add(minutos));
@@ -111,8 +114,6 @@ public class MovimentacaoService {
                 movimentacaoBanco.getCondutor().getTempoDesconto(),
                 movimentacaoBanco.getValorHoraTotal(),
                 movimentacaoBanco.getValorDesconto());
-
-
 
     }
 

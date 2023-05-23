@@ -31,7 +31,7 @@ public class CondutorService {
        //Verifica o TELEFONE
         Assert.isTrue(!condutor.getTelefone().isBlank(), "Error, campo telefone vazio");
         Assert.isTrue(this.condutorRepository.findTelefonesCadastro(condutor.getTelefone()).isEmpty(),"Telefone ja existe");
-        String regexTelefone = "^\\+\\d{2}\\(\\d{3}\\)\\d{5}-\\d{4}$";
+        String regexTelefone = "^\\+d{2}\\(d{3}\\)d{5}\\-d{4}$";
         Assert.isTrue(!condutor.getTelefone().matches(regexTelefone), "Mascara de telefone invalida");
 
         //Verificar o CPF
