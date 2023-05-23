@@ -3,6 +3,7 @@ package br.com.uniamerica.estacionamento.service;
 
 import br.com.uniamerica.estacionamento.entity.Movimentacao;
 import br.com.uniamerica.estacionamento.entity.Veiculo;
+import br.com.uniamerica.estacionamento.repository.MovimentacaoRepository;
 import br.com.uniamerica.estacionamento.repository.VeiculoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,8 @@ public class VeiculoService {
     private VeiculoRepository veiculoRepository;
 
     private final String regexPlaca = "^[a-zA-Z]{4}\\-d{4}$";
+    @Autowired
+    private MovimentacaoRepository movimentacaoRepository;
 
     @Transactional(rollbackFor = Exception.class)
     public void cadastrar(final Veiculo veiculo){
@@ -28,6 +31,12 @@ public class VeiculoService {
         Assert.isTrue( veiculo.getPlaca().length() < 10, "Error placa, valor maximo(10) do campo atingido");
 
         Assert.isTrue( veiculo.getAno() > 1990 && veiculo.getAno() <= 2023, "Ou esse carro e velo ou e muito novo");
+
+        Assert.isTrue(this.veiculoRepository.findVeiculoPlacaCadastrar(veiculo.getPlaca()).isEmpty(), "Error, essa placa ja existe");
+
+        //DEBUG MANUAL
+        System.out.println(veiculo.getPlaca() + veiculo.getId());
+        System.out.println(veiculoRepository.findVeiculoPlacaCadastrar(veiculo.getPlaca()));
 
         this.veiculoRepository.save(veiculo);
 
@@ -43,7 +52,9 @@ public class VeiculoService {
 
         Assert.isTrue(veiculoBanco != null || !veiculoBanco.getId().equals(veiculo.getId()),"Registro nao identificado");
 
-        Assert.isTrue( veiculo.getPlaca().length() > 10, "Error, valor maximo(10) do campo atingido");
+        Assert.isTrue(this.veiculoRepository.findVeiculoPlacaEditar(veiculo.getPlaca(),id).isEmpty(), "Error, essa placa ja existe");
+
+        Assert.isTrue( veiculo.getPlaca().length() < 10, "Error, valor maximo(10) do campo placa atingido");
 
         this.veiculoRepository.save(veiculo);
     }

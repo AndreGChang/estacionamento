@@ -22,6 +22,8 @@ public class MarcaService {
     public void cadastrar (final Marca marca){
         Assert.isTrue(marca.getNome() != null,"Error nome vazio");
 
+        Assert.isTrue(marcaRepository.findMarcaNomeCadastrar(marca.getNome()).isEmpty(),"Essa marca ja existe");
+
         this.marcaRepository.save(marca);
     }
 
@@ -31,7 +33,9 @@ public class MarcaService {
 
         Assert.isTrue(marcaBanco.getId().equals(id) ,"Error id da URL diferente do body");
 
-        Assert.isTrue(marcaBanco != null || !marcaBanco.getId().equals(marca.getId()),"nao foi possivel identificar o registro");
+        Assert.isTrue(marcaBanco != null || !marcaBanco.getId().equals(id),"nao foi possivel identificar o registro");
+
+        Assert.isTrue(marcaRepository.findMarcaNomeEditar(marca.getNome(), marca.getId()).isEmpty(),"Essa marca ja existe");
 
         this.marcaRepository.save(marca);
 

@@ -73,7 +73,7 @@ public class ModeloController {
     public ResponseEntity<?> cadastrar (@RequestBody final Modelo modelo){
 
         try{
-            this.modeloRepository.save(modelo);
+            this.modeloService.cadastrar(modelo);
             return ResponseEntity.ok("registro com sucesso");
         }catch (Exception e){
             return  ResponseEntity.badRequest().body("Error" + e.getMessage());

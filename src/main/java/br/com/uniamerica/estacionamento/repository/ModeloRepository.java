@@ -17,4 +17,10 @@ public interface ModeloRepository extends JpaRepository<Modelo, Long> {
     @Query("from Modelo where ativo = true")
     public List<Modelo> findByAtivo ();
 
+    @Query("from Modelo where nome = :nome")
+    public List<Modelo> findModeloNomeCadastrar (@Param("nome")final String nome);
+
+    @Query("from Modelo where nome = :nome AND id != :id")
+    public List<Modelo> findModeloNomeEditar (@Param("nome")final String nome, @Param("id")final Long id);
+
 }

@@ -17,4 +17,11 @@ public interface MarcaRepository extends JpaRepository<Marca, Long> {
 
     @Query("from Marca where ativo = true")
     public List<Marca> findMarcasAtivas ();
+
+    @Query("from Marca where nome = :nome AND id != :id")
+    public List<Marca> findMarcaNomeEditar(@Param("nome")final String nome, @Param("id")final Long id);
+
+    @Query("from Marca where nome = :nome")
+    public List<Marca> findMarcaNomeCadastrar(@Param("nome")final String nome);
+
 }

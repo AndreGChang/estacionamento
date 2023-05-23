@@ -49,12 +49,11 @@ public class MovimentacaoController {
 
     @PostMapping
     public ResponseEntity<?> cadastrar (@RequestBody final Movimentacao movimentacao){
-
         try{
             this.movimentacaoService.cadastrar(movimentacao);
             return ResponseEntity.ok("registro com sucesso");
-        }catch (Exception e){
-            return  ResponseEntity.badRequest().body("Error" + e.getMessage());
+        }catch (RuntimeException e){
+            return  ResponseEntity.badRequest().body("Error " + e.getMessage());
         }
 
     }
@@ -90,30 +89,12 @@ public class MovimentacaoController {
 
         try{
             this.movimentacaoService.deletar(movimentacaoBanco);
-            return ResponseEntity.ok("Ativo(movimentacao) alterado para false ");
+            return ResponseEntity.ok("Ativo(movimentacao) alterado para false");
         }catch(RuntimeException e){
             return ResponseEntity.internalServerError().body("Error " + e.getMessage());
         }
 
     }
-
-
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    public Map<String, String> handlerValidationException(MethodArgumentNotValidException ex){
-//        Map<String,String> errors = new HashMap<>();
-//
-//        ex.getBindingResult().getAllErrors().forEach((error) ->{
-//            String filedname = ((FieldError) error).getField();
-//            String errorMessage = error.getDefaultMessage();
-//
-//            errors.put(filedname,errorMessage);
-//
-//
-//        });
-//
-//        return errors;
-//    }
 
 
 }

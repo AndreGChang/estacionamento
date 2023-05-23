@@ -22,6 +22,8 @@ public class CondutorService {
     @Autowired
     private ValidaCPF validaCPF;
 
+    String regexTelefone = "^\\+d{2}\\(d{3}\\)d{5}\\-d{4}$";
+
     @Transactional(rollbackFor =  Exception.class)
     public void cadastrar(final Condutor condutor){
 
@@ -31,7 +33,7 @@ public class CondutorService {
        //Verifica o TELEFONE
         Assert.isTrue(!condutor.getTelefone().isBlank(), "Error, campo telefone vazio");
         Assert.isTrue(this.condutorRepository.findTelefonesCadastro(condutor.getTelefone()).isEmpty(),"Telefone ja existe");
-        String regexTelefone = "^\\+d{2}\\(d{3}\\)d{5}\\-d{4}$";
+
         Assert.isTrue(!condutor.getTelefone().matches(regexTelefone), "Mascara de telefone invalida");
 
         //Verificar o CPF
@@ -56,8 +58,7 @@ public class CondutorService {
         Assert.isTrue(!condutor.getTelefone().isBlank(), "Error digite uma telefone");
         Assert.isTrue(this.condutorRepository.findTelefonesEditar(condutor.getTelefone(), id).isEmpty(),"Error telefone ja existe");
 
-        String regexTelefone = "^\\+\\d{2}\\(\\d{3}\\)\\d{4}-\\d{4}$";
-        Assert.isTrue(condutor.getTelefone().matches(regexTelefone), "Mascara de telefone invalida");
+        Assert.isTrue(!condutor.getTelefone().matches(regexTelefone), "Mascara de telefone invalida");
 
         //verificar o CPF
         Assert.isTrue(!condutor.getCpf().isBlank(), "CPF, nao informado");

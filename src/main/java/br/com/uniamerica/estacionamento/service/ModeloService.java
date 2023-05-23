@@ -22,7 +22,9 @@ public class ModeloService {
 
     @Transactional(rollbackFor = Exception.class)
     public void cadastrar(final Modelo modelo){
-        Assert.isTrue(modelo.getNome().isBlank(),"Error nome vazio");
+        Assert.isTrue(!modelo.getNome().isBlank(),"Error nome vazio");
+
+        Assert.isTrue(modeloRepository.findModeloNomeCadastrar(modelo.getNome()).isEmpty(),"Error nome de modelo ja existe");
 
         this.modeloRepository.save(modelo);
     }
@@ -36,6 +38,8 @@ public class ModeloService {
         Assert.isTrue(modeloBanco.getId().equals(id) ,"Error id da URL diferente do body");
 
         Assert.isTrue(modeloBanco != null || !modeloBanco.getId().equals(modelo.getId()),"Registro nao encontrado");
+
+        Assert.isTrue(modeloRepository.findModeloNomeEditar(modelo.getNome(),id).isEmpty(),"Error nome de modelo ja existe");
 
         this.modeloRepository.save(modelo);
 

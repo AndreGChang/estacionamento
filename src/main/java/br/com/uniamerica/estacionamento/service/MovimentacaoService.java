@@ -32,6 +32,12 @@ public class MovimentacaoService {
 
     @Transactional(rollbackFor = Exception.class)
     public void cadastrar(final Movimentacao movimentacao){
+
+        Assert.isTrue(movimentacaoRepository.findVeiculo(movimentacao.getVeiculo(), movimentacao.getId()).isEmpty(),"Esse veiculo ja esta estacionado");
+
+        Assert.isTrue(!this.movimentacaoRepository.findCondutorMov(movimentacao.getCondutor().getId()).isEmpty(),"Condutor nao existe");
+        Assert.isTrue(!this.movimentacaoRepository.findVeiculoMov(movimentacao.getVeiculo().getId()).isEmpty(),"Veiculo nao existe");
+
         this.movimentacaoRepository.save(movimentacao);
     }
 
@@ -66,7 +72,9 @@ public class MovimentacaoService {
 
         Assert.isTrue(movimentacaoBanco != null, "Error registro nao encontrado");
 
-        movimentacaoBanco.setAtivo(false);
+        Assert.isTrue(movimentacaoBanco.getSaida() == null,"Essa movimentacao ja foi finalizada. ID:" + movimentacaoBanco.getId());
+
+        //movimentacaoBanco.setAtivo(false);
 
         LocalDateTime saida = LocalDateTime.now();
 
