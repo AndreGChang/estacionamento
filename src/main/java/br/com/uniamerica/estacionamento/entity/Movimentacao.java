@@ -85,8 +85,9 @@ public class Movimentacao extends AbstractEntity{
 
     @PrePersist
     private void prePersiste(){
+        setAtivo(true);
         setCadastro(LocalDateTime.now());
         this.setEntrada(LocalDateTime.now());
-        this.setTempoDesconto(0);
+        setTempoDesconto(0);
     }
 }

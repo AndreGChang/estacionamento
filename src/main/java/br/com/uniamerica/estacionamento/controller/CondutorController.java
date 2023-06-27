@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping(value = "/api/condutor")
 public class CondutorController {
 
@@ -21,8 +21,8 @@ public class CondutorController {
     @Autowired
     private CondutorService condutorService;
 
-    @GetMapping
-    public ResponseEntity<?> findByParam (@RequestParam("id") final Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findByParam (@PathVariable("id") final Long id){
         final Condutor condutor = this.condutorRepository.findById(id).orElse(null);
 
         return condutor == null
@@ -45,8 +45,8 @@ public class CondutorController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Condutor condutor){
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editar (@PathVariable("id") final Long id, @RequestBody final Condutor condutor){
         try{
             this.condutorService.editar(id,condutor);
             return ResponseEntity.ok().body("Registro salvo com sucesso");
@@ -59,8 +59,8 @@ public class CondutorController {
 
 
 
-    @DeleteMapping
-    public ResponseEntity<?> deletar (@RequestParam("id") final Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletar (@PathVariable("id") final Long id){
         try{
             this.condutorService.deletar(id);
             return ResponseEntity.ok("Registro deletado");

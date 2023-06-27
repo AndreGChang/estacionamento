@@ -27,8 +27,8 @@ public class MarcaController {
         return ResponseEntity.ok(this.marcaRepository.findAll());
     }
 
-    @GetMapping
-    public ResponseEntity<?> findMarcaByid(@RequestParam("id") final Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findMarcaByid(@PathVariable("id") final Long id) {
         final Marca marca = this.marcaRepository.findById(id).orElse(null);
 
         return marca == null
@@ -52,14 +52,10 @@ public class MarcaController {
             return  ResponseEntity.badRequest().body("Error" + e.getMessage());
         }
 
-
-
-
-
     }
 
-    @PutMapping
-    public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Marca marca){
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editar (@PathVariable("id") final Long id, @RequestBody final Marca marca){
         try{
             //final Marca marcaBanco = this.marcaRepository.findById(id).orElse(null);
 
@@ -72,8 +68,8 @@ public class MarcaController {
         }
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> delete (@RequestParam("id") final  Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete (@PathVariable("id") final  Long id){
         final Marca marcaBanco = this.marcaRepository.findById(id).orElse(null);
 
         List<Modelo> modeloLista = this.marcaRepository.findModelo(marcaBanco);

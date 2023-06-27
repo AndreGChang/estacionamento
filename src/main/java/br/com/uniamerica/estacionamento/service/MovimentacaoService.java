@@ -17,6 +17,8 @@ import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 
 @Service
@@ -74,7 +76,7 @@ public class MovimentacaoService {
 
         Assert.isTrue(movimentacaoBanco.getSaida() == null,"Essa movimentacao ja foi finalizada. ID:" + movimentacaoBanco.getId());
 
-        //movimentacaoBanco.setAtivo(false);
+        movimentacaoBanco.setAtivo(false);
 
         LocalDateTime saida = LocalDateTime.now();
 
@@ -94,7 +96,14 @@ public class MovimentacaoService {
 
         if(config.isGerarDesconto()){
             if(alguem.getTempoDesconto().compareTo(new BigDecimal(config.getTempoParaDesconto())) > 0){
-                System.out.println(alguem.getTempoDesconto().compareTo(new BigDecimal(config.getTempoParaDesconto())));
+//                System.out.println(alguem.getTempoDesconto().compareTo(new BigDecimal(config.getTempoParaDesconto())));
+                //alguem.getTempoDesconto().divide(config.getTempoDeDesconto(),RoundingMode.DOWN);
+
+
+                if(!alguem.getTempoDesconto().remainder(config.getTempoDeDesconto()).equals(new BigDecimal(0))){
+
+                }
+
                 movimentacaoBanco.setValorDesconto(preco.subtract(config.getTempoDeDesconto()));
             }else{
                 alguem.setTempoDesconto(horas.add(minutos));

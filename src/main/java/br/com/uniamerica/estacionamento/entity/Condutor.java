@@ -1,10 +1,7 @@
 package br.com.uniamerica.estacionamento.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,5 +39,10 @@ public class Condutor extends AbstractEntity{
     @Column(name = "tempo_desconto")
     private BigDecimal tempoDesconto;
 
+
+    @PrePersist
+    public void prePersist(){
+        this.tempoDesconto = new BigDecimal(0);
+    }
 
 }

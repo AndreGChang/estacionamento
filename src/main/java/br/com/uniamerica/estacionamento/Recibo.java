@@ -1,5 +1,6 @@
 package br.com.uniamerica.estacionamento;
 
+import br.com.uniamerica.estacionamento.entity.AbstractEntity;
 import br.com.uniamerica.estacionamento.entity.Condutor;
 import br.com.uniamerica.estacionamento.entity.Veiculo;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class Recibo {
+public class Recibo extends AbstractEntity {
 
     @Getter
     @Setter

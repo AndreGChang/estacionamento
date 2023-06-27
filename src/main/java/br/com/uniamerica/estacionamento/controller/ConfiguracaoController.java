@@ -21,8 +21,8 @@ public class ConfiguracaoController {
     @Autowired
     private ConfiguracaoService configuracaoService;
 
-    @GetMapping
-    public ResponseEntity<?> findByParam (@RequestParam("id") final Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findByParam (@PathVariable("id") final Long id){
         final Configuracao configuracao = this.configuracaoRepository.findById(id).orElse(null);
 
         return configuracao == null
@@ -40,8 +40,8 @@ public class ConfiguracaoController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Configuracao configuracao){
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editar (@PathVariable("id") final Long id, @RequestBody final Configuracao configuracao){
         try{
             this.configuracaoService.editar(id,configuracao);
 

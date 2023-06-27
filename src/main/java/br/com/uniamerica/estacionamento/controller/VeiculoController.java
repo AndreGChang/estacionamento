@@ -36,8 +36,8 @@ public class VeiculoController {
         return ResponseEntity.ok(this.veiculoRepository.findAll());
     }
 
-    @GetMapping
-    public ResponseEntity<?> findMarcaByid(@RequestParam("id") final Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findMarcaByid(@PathVariable("id") final Long id) {
         final Veiculo veiculo = this.veiculoRepository.findById(id).orElse(null);
 
         return veiculo == null
@@ -58,8 +58,8 @@ public class VeiculoController {
 
     }
 
-    @PutMapping
-    public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Veiculo veiculo){
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editar (@PathVariable("id") final Long id, @RequestBody final Veiculo veiculo){
         try{
 
             this.veiculoService.editar(id,veiculo);
@@ -72,8 +72,8 @@ public class VeiculoController {
         }
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> delete (@RequestParam("id") final  Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete (@PathVariable("id") final  Long id){
         final Veiculo veiculoBanco = this.veiculoRepository.findById(id).orElse(null);
 
         this.veiculoService.deletar(veiculoBanco);

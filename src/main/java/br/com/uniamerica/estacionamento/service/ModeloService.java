@@ -22,9 +22,10 @@ public class ModeloService {
 
     @Transactional(rollbackFor = Exception.class)
     public void cadastrar(final Modelo modelo){
-        Assert.isTrue(!modelo.getNome().isBlank(),"Error nome vazio");
+        Assert.isTrue(modelo.getNome() != null ,"Error nome vazio");
 
         Assert.isTrue(modeloRepository.findModeloNomeCadastrar(modelo.getNome()).isEmpty(),"Error nome de modelo ja existe");
+        Assert.isTrue(modelo.getMarca() != null,"Error, modelo sem marca");
 
         this.modeloRepository.save(modelo);
     }

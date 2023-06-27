@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+
 @Controller
 @RequestMapping(value = "/api/modelo")
 public class ModeloController {
@@ -34,23 +36,12 @@ public class ModeloController {
     }
 
     /**
-     * http://localhost:8080/api/modelo/1
-     * @param id
-     * @return
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<?> findByIdPath (@PathVariable("id") final Long id){
-        return ResponseEntity.ok(new Modelo());
-    }
-
-
-    /**
      * http://localhost:8080/api/modelo?id=1
      * @param id
      * @return
      */
-    @GetMapping
-    public ResponseEntity<?> findByIdParam (@RequestParam("id") final Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findByIdParam (@PathVariable("id") final Long id){
         final Modelo modelo = this.modeloRepository.findById(id).orElse(null);
 
         return modelo == null
@@ -80,8 +71,8 @@ public class ModeloController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Modelo modelo){
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editar (@PathVariable("id") final Long id, @RequestBody final Modelo modelo){
         try{
             this.modeloService.editar(id,modelo);
             return ResponseEntity.ok("Registro atualizado com sucesso");
@@ -92,8 +83,8 @@ public class ModeloController {
         }
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> deletar (@RequestParam("id") final Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletar (@PathVariable("id") final Long id) {
         try{
             final Modelo modeloBanco = this.modeloRepository.findById(id).orElse(null);
 

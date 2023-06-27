@@ -33,8 +33,8 @@ public class MovimentacaoController {
         return ResponseEntity.ok(this.movimentacaoRepository.findAll());
     }
 
-    @GetMapping
-    public ResponseEntity<?> findbyId (@RequestParam("id") final Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findbyId (@PathVariable("id") final Long id){
         final Movimentacao movimentacao = this.movimentacaoRepository.findById(id).orElse(null);
 
         return movimentacao == null
@@ -58,8 +58,8 @@ public class MovimentacaoController {
 
     }
 
-    @PutMapping
-    public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Movimentacao movimentacao){
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editar (@PathVariable("id") final Long id, @RequestBody final Movimentacao movimentacao){
         try{
 
             this.movimentacaoService.editar(id,movimentacao);
@@ -72,8 +72,8 @@ public class MovimentacaoController {
         }
     }
 
-    @PutMapping("/saida")
-    public ResponseEntity<?> saida (@RequestParam("id")final Long id){
+    @PutMapping("/saida/{id}")
+    public ResponseEntity<?> saida (@PathVariable("id")final Long id){
         try{
              Recibo dale = this.movimentacaoService.saida(id);
             return ResponseEntity.ok(dale);
@@ -83,8 +83,8 @@ public class MovimentacaoController {
     }
 
 
-    @DeleteMapping
-    public ResponseEntity<?> delete (@RequestParam("id") final  Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete (@PathVariable("id") final  Long id){
         final Movimentacao movimentacaoBanco = this.movimentacaoRepository.findById(id).orElse(null);
 
         try{

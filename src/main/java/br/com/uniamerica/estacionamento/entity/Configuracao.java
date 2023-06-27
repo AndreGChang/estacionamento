@@ -8,7 +8,9 @@ import org.hibernate.envers.Audited;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.time.LocalTime;
+import java.util.Date;
 
 
 @Entity
@@ -67,5 +69,10 @@ public class Configuracao extends AbstractEntity{
     @Column(name = "vagas_vans")
     private Integer vagasVans;
 
-
+//    @PrePersist
+//    public void prePersist(){
+//        this.valorHora = new BigDecimal(5);
+//        this.valorMulta = new BigDecimal(2.5);
+//        this.inicioExpediente = ;
+//    }
 }

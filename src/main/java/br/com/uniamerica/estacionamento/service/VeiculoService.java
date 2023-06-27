@@ -19,14 +19,15 @@ public class VeiculoService {
     @Autowired
     private VeiculoRepository veiculoRepository;
 
-    private final String regexPlaca = "^[a-zA-Z]{4}\\-d{4}$";
+    private final String regexPlaca = "^[a-zA-Z]{3}\\-d{4}$";
+    private final String regexPlacaNova = "^[A-Za-z]{3}\\d{1}[A-Za-z]{1}\\d{2}$";
     @Autowired
     private MovimentacaoRepository movimentacaoRepository;
 
     @Transactional(rollbackFor = Exception.class)
     public void cadastrar(final Veiculo veiculo){
 
-        Assert.isTrue(!veiculo.getPlaca().matches(regexPlaca),"Error a placa esta errada");
+        //Assert.isTrue(!veiculo.getPlaca().matches(regexPlaca),"Error a placa esta errada");
 
         Assert.isTrue( veiculo.getPlaca().length() < 10, "Error placa, valor maximo(10) do campo atingido");
 
@@ -34,6 +35,7 @@ public class VeiculoService {
 
         Assert.isTrue(this.veiculoRepository.findVeiculoPlacaCadastrar(veiculo.getPlaca()).isEmpty(), "Error, essa placa ja existe");
 
+        Assert.isTrue(!veiculo.getPlaca().matches((regexPlaca)) || veiculo.getPlaca().matches(regexPlacaNova), "Placa esta incorreta");
         //DEBUG MANUAL
         System.out.println(veiculo.getPlaca() + veiculo.getId());
         System.out.println(veiculoRepository.findVeiculoPlacaCadastrar(veiculo.getPlaca()));
@@ -46,7 +48,9 @@ public class VeiculoService {
     public void editar (final Long id,final Veiculo veiculo){
         final Veiculo veiculoBanco = this.veiculoRepository.findById(veiculo.getId()).orElse(null);
 
-        Assert.isTrue(!veiculo.getPlaca().matches(regexPlaca),"Error a placa esta errada");
+        //Assert.isTrue(!veiculo.getPlaca().matches(regexPlaca),"Error a placa esta errada");
+
+        Assert.isTrue(veiculo.getPlaca().matches((regexPlaca)) || veiculo.getPlaca().matches(regexPlacaNova), "Placa esta incorreta");
 
         Assert.isTrue(veiculoBanco.getId().equals(id),"Error id da URL diferente do body");
 
